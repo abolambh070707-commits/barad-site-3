@@ -1,0 +1,22 @@
+---
+// زرّا «اتصل» و«واتساب». يُستخدم في كل مكان بدل تكرار الكود.
+// loc: اسم الموضع لتتبع النقرات في الإحصاءات.
+import { siteConfig } from '../data/siteData';
+import Icon from './Icon.astro';
+
+export interface Props {
+  loc: string;
+  class?: string;
+}
+const { loc, class: extra = '' } = Astro.props;
+---
+<div class={`grid grid-cols-2 gap-2.5 ${extra}`}>
+  <a href={`tel:${siteConfig.phoneIntl}`} data-track-loc={loc} class="flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-brand hover:bg-brand-hover text-white font-extrabold text-sm shadow-sm transition-colors">
+    <Icon name="phone" class="w-5 h-5 shrink-0" />
+    <span>اتصل الآن</span>
+  </a>
+  <a href={siteConfig.whatsappUrl} target="_blank" rel="noopener noreferrer" data-track-loc={loc} class="flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-wa hover:bg-wa-hover text-white font-extrabold text-sm shadow-sm transition-colors">
+    <Icon name="whatsapp" class="w-5 h-5 shrink-0" />
+    <span>واتساب</span>
+  </a>
+</div>

@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceForm from '../../components/ServiceForm.astro';
+import CtaButtons from '../../components/CtaButtons.astro';
+import Icon from '../../components/Icon.astro';
+import { services, siteConfig, type ServiceItem } from '../../data/siteData';
+import { serviceSchema } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+export interface Props {
+  service: ServiceItem;
+}
+
+const { service } = Astro.props;
+const otherServices = services.filter((s) => s.slug !== service.slug);
+---
+<BaseLayout
+  title={service.metaTitle}
+  description={service.metaDescription}
+  canonicalPath={`/services/${service.slug}/`}
+  image={`${service.imageBase}.webp`}
+  crumbs={[{ name: service.title }]}
+  schema={[serviceSchema(service)]}
+>
+  <section class="py-8 sm:py-14 px-4 bg-gradient-to-b from-brand-soft to-page">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-7 space-y-4">
+        <span class="inline-block px-3 py-1 rounded-full bg-card border border-line text-brand text-xs font-bold">{service.heroBadge}</span>
+        <h1 class="text-2xl sm:text-4xl font-extrabold leading-tight">{service.h1}</h1>
+        <p class="text-base text-copy leading-relaxed">{service.intro}</p>
+        {service.priceFrom && <p class="text-lg font-extrabold text-ok">{service.priceFrom}</p>}
+        <CtaButtons loc={`service_hero_${service.slug}`} class="max-w-sm pt-2" />
+      </div>
+      <div class="lg:col-span-5">
+        <picture>
+          <source type="image/avif" srcset={`${service.imageBase}-400w.avif 400w, ${service.imageBase}.avif 800w`} sizes="(max-width: 768px) 100vw, 460px" />
+          <source type="image/webp" srcset={`${service.imageBase}-400w.webp 400w, ${service.imageBase}.webp 800w`} sizes="(max-width: 768px) 100vw, 460px" />
+          <img src={`${service.imageBase}-400w.webp`} alt={service.title} width={service.imageWidth} height={service.imageHeight} fetchpriority="high" decoding="async" class="w-full h-auto rounded-2xl border border-line shadow-xl object-cover" />
+        </picture>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-8 px-4 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8">
+    <div class="rounded-2xl bg-card border border-line p-6 sm:p-8">
+      <h2 class="text-xl sm:text-2xl font-extrabold mb-4">مميزات الخدمة والمعايير الفنية</h2>
+      <ul class="space-y-3 text-sm sm:text-base">
+        {service.features.map((feat) => (
+          <li class="flex items-start gap-2.5">
+            <Icon name="check" class="w-5 h-5 mt-0.5 shrink-0 text-ok" />
+            <span>{feat}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="rounded-2xl bg-card border border-line p-6 sm:p-8">
+      <h2 class="text-xl sm:text-2xl font-extrabold mb-4">خطوات التنفيذ الميداني</h2>
+      <ol class="space-y-4">
+        {service.steps.map((step, idx) => (
+          <li class="flex items-start gap-3">
+            <span class="shrink-0 w-7 h-7 rounded-lg bg-brand text-white font-extrabold text-xs flex items-center justify-center mt-0.5">{idx + 1}</span>
+            <div>
+              <h3 class="font-bold text-ink text-sm sm:text-base">{step.title}</h3>
+              <p class="text-xs sm:text-sm text-muted mt-0.5">{step.description}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="py-6 px-4 max-w-7xl mx-auto">
+    <div class="rounded-2xl bg-card border border-line p-4 sm:p-8">
+      <h2 class="text-lg sm:text-2xl font-extrabold mb-1">تفاصيل الخدمات المندرجة تحت {service.title}</h2>
+      <p class="text-xs sm:text-sm text-muted mb-4">اضغط على أي قسم لعرض تفاصيله.</p>
+      <div class="space-y-3">
+        {service.subServiceGroups.map((grp, gi) => (
+          <details open={service.subServiceGroups.length === 1 && gi === 0} class="group rounded-xl bg-page border border-line">
+            <summary class="flex items-center justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden px-4 py-3 text-sm sm:text-base font-extrabold text-brand">
+              <span>{grp.groupTitle}</span>
+              <Icon name="chevron" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" />
+            </summary>
+            <dl class="divide-y divide-line px-4 pb-2">
+              {grp.items.map((item) => (
+                <div class="py-3 sm:grid sm:grid-cols-12 sm:gap-4 items-baseline">
+                  <dt class="sm:col-span-5 font-bold text-ink text-sm flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded bg-brand-soft text-brand font-mono text-xs">{item.code}</span>
+                    <span>{item.name}</span>
+                  </dt>
+                  <dd class="sm:col-span-7 text-xs sm:text-sm text-muted mt-1 sm:mt-0">{item.description}</dd>
+                </div>
+              ))}
+            </dl>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-6 px-4 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="rounded-2xl bg-card border border-line p-5">
+      <h2 class="text-base font-extrabold mb-3">أقسام الصيانة الأخرى</h2>
+      <ul class="space-y-2 text-sm">
+        {otherServices.map((os) => (
+          <li><a href={`/services/${os.slug}/`} class="text-brand hover:underline font-semibold">{os.title} ←</a></li>
+        ))}
+      </ul>
+    </div>
+    <div class="rounded-2xl bg-card border border-line p-5">
+      <h2 class="text-base font-extrabold mb-2">نطاق الخدمة</h2>
+      <p class="text-sm text-muted">نخدم جميع أحياء مدينة جدة، ونصلك في موقعك.</p>
+      <p class="text-sm text-muted mt-1">ساعات العمل: {siteConfig.hoursText}</p>
+      <p class="text-sm text-muted mt-1">ضمان {siteConfig.warrantyDays} يوماً على العمل المنفذ. <a href="/warranty/" class="text-brand font-bold hover:underline">تفاصيل الضمان ←</a></p>
+    </div>
+  </section>
+
+  <ServiceForm defaultService={service.title} />
+</BaseLayout>

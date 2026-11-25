@@ -1,0 +1,154 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceForm from '../components/ServiceForm.astro';
+import Reviews from '../components/Reviews.astro';
+import CtaButtons from '../components/CtaButtons.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import { services, galleryItems, siteConfig } from '../data/siteData';
+import { trustPoints, processSteps, brands, brandsNote, faqs, loyaltyCard, annualPackage } from '../data/content';
+import { faqSchema } from '../lib/schema';
+
+const hero = galleryItems[0];
+---
+<BaseLayout schema={[faqSchema(faqs)]}>
+  <!-- المقدمة -->
+  <section class="py-8 sm:py-14 px-4 bg-gradient-to-b from-brand-soft to-page">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div class="space-y-4 text-center lg:text-right">
+        <span class="inline-block px-3 py-1 rounded-full bg-card border border-line text-xs font-bold text-ok">نخدم جميع أحياء مدينة جدة</span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold leading-tight">صيانة وغسيل وتركيب المكيفات في جدة</h1>
+        <p class="text-base sm:text-lg text-copy leading-relaxed">غسيل بالمضخة، تأسيس مواسير النحاس، شحن فريون أصلي وكشف التسريب، وصيانة السبليت والكونسيلد والمركزي والكاسيت.</p>
+        <CtaButtons loc="hero" class="max-w-sm mx-auto lg:mx-0 pt-1" />
+        <p class="flex items-center justify-center lg:justify-start gap-1.5 text-xs sm:text-sm text-muted">
+          <Icon name="clock" class="w-4 h-4" /> {siteConfig.hoursShort}
+        </p>
+      </div>
+      <picture>
+        <source type="image/avif" srcset={`${hero.imageBase}-400w.avif 400w, ${hero.imageBase}.avif 800w`} sizes="(max-width: 1024px) 100vw, 560px" />
+        <source type="image/webp" srcset={`${hero.imageBase}-400w.webp 400w, ${hero.imageBase}.webp 800w`} sizes="(max-width: 1024px) 100vw, 560px" />
+        <img src={`${hero.imageBase}.webp`} alt={hero.title} width={hero.width} height={hero.height} fetchpriority="high" decoding="async" class="w-full h-auto rounded-2xl border border-line shadow-xl" />
+      </picture>
+    </div>
+  </section>
+
+  <!-- شريط الثقة -->
+  <section class="px-4 pb-4 -mt-1">
+    <ul class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-3">
+      {trustPoints.map((t) => (
+        <li class="flex items-center gap-3 rounded-xl bg-card border border-line p-3.5">
+          <span class="shrink-0 w-10 h-10 rounded-lg bg-brand-soft text-brand flex items-center justify-center"><Icon name={t.icon} class="w-5 h-5" /></span>
+          <div class="min-w-0">
+            <p class="font-extrabold text-ink text-sm">{t.title}</p>
+            <p class="text-xs text-muted">{t.text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- الخدمات -->
+  <section id="services" class="py-10 px-4 max-w-7xl mx-auto">
+    <h2 class="text-2xl sm:text-3xl font-extrabold mb-5">خدماتنا</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+      {services.map((s) => (
+        <a href={`/services/${s.slug}/`} class="flex md:flex-col rounded-2xl bg-card border border-line hover:border-brand hover:shadow-lg transition overflow-hidden">
+          <picture class="shrink-0 w-28 sm:w-40 md:w-full">
+            <source type="image/avif" srcset={`${s.imageBase}-400w.avif 400w, ${s.imageBase}.avif 800w`} sizes="(max-width: 768px) 160px, 380px" />
+            <source type="image/webp" srcset={`${s.imageBase}-400w.webp 400w, ${s.imageBase}.webp 800w`} sizes="(max-width: 768px) 160px, 380px" />
+            <img src={`${s.imageBase}-400w.webp`} alt={s.title} width={s.imageWidth} height={s.imageHeight} loading="lazy" decoding="async" class="w-full h-full md:h-44 object-cover" />
+          </picture>
+          <div class="p-3.5 md:p-5 flex-1 min-w-0">
+            <h3 class="text-base md:text-lg font-extrabold mb-1">{s.title}</h3>
+            <p class="hidden sm:block md:text-sm text-xs text-muted leading-relaxed line-clamp-2 md:line-clamp-3">{s.shortDescription}</p>
+            {s.priceFrom && <p class="mt-2 text-sm font-extrabold text-ok">{s.priceFrom}</p>}
+            <span class="inline-block mt-2 text-xs font-bold text-brand">التفاصيل ←</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- كيف نعمل -->
+  <section class="py-10 px-4 bg-soft border-y border-line">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-2xl sm:text-3xl font-extrabold mb-6 text-center">كيف نعمل؟</h2>
+      <ol class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {processSteps.map((s, i) => (
+          <li class="rounded-2xl bg-card border border-line p-5 text-center">
+            <span class="mx-auto mb-3 w-10 h-10 rounded-full bg-brand text-white font-extrabold flex items-center justify-center">{i + 1}</span>
+            <h3 class="font-extrabold text-ink">{s.title}</h3>
+            <p class="text-sm text-muted mt-1">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- بطاقة الولاء والباقة السنوية -->
+  <section id="loyalty" class="py-10 px-4 max-w-7xl mx-auto">
+    <h2 class="text-2xl sm:text-3xl font-extrabold mb-2">بطاقة الولاء والباقة السنوية</h2>
+    <p class="text-sm sm:text-base text-muted mb-5">اجعل غسيل مكيفاتك أوفر وأسهل: اجمع الأختام مع أهلك وجيرانك، أو اشترك في باقة سنوية بموعدين محجوزين.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+      {[loyaltyCard, annualPackage].map((c) => (
+        <div class="rounded-2xl bg-card border border-line p-5">
+          <h3 class="text-lg font-extrabold text-ink">{c.title}</h3>
+          <p class="text-sm font-bold text-ok mt-1">{c.headline}</p>
+          <ul class="mt-3 space-y-2 text-sm text-copy">
+            {c.highlights.map((h) => (
+              <li class="flex items-start gap-2"><Icon name="check" class="w-4 h-4 mt-0.5 shrink-0 text-ok" /><span>{h}</span></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <p class="mt-4 text-sm"><a href="/loyalty/" class="font-extrabold text-brand underline">اقرأ شروط البطاقة والباقة كاملة ←</a></p>
+  </section>
+
+  <!-- للجهات والعقارات -->
+  <section class="px-4 pb-6 max-w-7xl mx-auto">
+    <div class="rounded-2xl bg-brand-soft border border-line p-5 sm:p-6 flex flex-col md:flex-row md:items-center gap-4 md:justify-between">
+      <div>
+        <h2 class="text-xl font-extrabold text-ink">للشركات ومكاتب العقار والملاك والمنشآت</h2>
+        <p class="text-sm text-copy mt-1">عقود صيانة دورية بجدول زيارات ثابت، وتقرير مصور وفاتورة نظامية بعد كل زيارة، وأسعار حسب عدد الوحدات.</p>
+      </div>
+      <a href="/services/annual-ac-maintenance-contracts/" class="shrink-0 text-center py-3 px-5 rounded-xl bg-brand hover:bg-brand-hover text-white font-extrabold text-sm shadow-sm transition-colors">اطلب عرضاً للجهات</a>
+    </div>
+  </section>
+
+  <!-- الماركات -->
+  <section class="py-8 px-4 max-w-5xl mx-auto text-center">
+    <h2 class="text-xl font-extrabold mb-2">نصون جميع ماركات المكيفات</h2>
+    <p class="text-sm sm:text-base text-muted">{brandsNote}</p>
+    {brands.length > 0 && (
+      <ul class="flex flex-wrap justify-center gap-2 mt-4">
+        {brands.map((b) => <li class="px-4 py-2 rounded-xl bg-card border border-line text-sm font-bold text-ink">{b}</li>)}
+      </ul>
+    )}
+  </section>
+
+  <!-- التقييمات -->
+  <Reviews />
+
+  <!-- الأسئلة الشائعة -->
+  <section id="faq" class="py-12 px-4 max-w-3xl mx-auto">
+    <h2 class="text-2xl sm:text-3xl font-extrabold mb-5">أسئلة شائعة</h2>
+    <Faq items={faqs} />
+  </section>
+
+  <!-- تواصل معنا -->
+  <section id="contact" class="py-10 px-4 max-w-3xl mx-auto">
+    <h2 class="text-2xl sm:text-3xl font-extrabold mb-5">تواصل معنا</h2>
+    <div class="rounded-2xl bg-card border border-line p-5 space-y-4 text-sm">
+      <CtaButtons loc="contact" />
+      <dl class="space-y-3 text-copy">
+        <div><dt class="text-xs text-muted">طريقة الخدمة</dt><dd class="font-semibold">{siteConfig.locationNote}</dd></div>
+        <div><dt class="text-xs text-muted">طرق الدفع</dt><dd class="font-semibold">{siteConfig.paymentMethods.join(' • ')}</dd></div>
+        <div><dt class="text-xs text-muted">ساعات العمل</dt><dd class="font-semibold">{siteConfig.hoursText}</dd></div>
+        <div><dt class="text-xs text-muted">نطاق الخدمة</dt><dd class="font-semibold">جميع أحياء مدينة جدة</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <ServiceForm />
+</BaseLayout>

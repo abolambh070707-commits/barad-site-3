@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { assetUrl } from '../../lib/assets';
+const field = 'w-full rounded-xl bg-card border border-line px-4 py-3 text-ink';
+---
+<BaseLayout title="مراجعة التقييمات" description="لوحة مراجعة التقييمات" canonicalPath="/admin/" noindex={true}>
+  <section class="py-8 px-4 max-w-3xl mx-auto space-y-6">
+    <h1 class="text-2xl font-extrabold">مراجعة التقييمات</h1>
+
+    <form id="adminLogin" class="rounded-2xl bg-card border border-line p-5 space-y-3">
+      <label for="adminPw" class="block text-sm font-bold text-ink">كلمة مرور الإدارة</label>
+      <input id="adminPw" type="password" autocomplete="current-password" required class={field} />
+      <button type="submit" class="w-full py-3 rounded-xl bg-brand hover:bg-brand-hover text-white font-extrabold">دخول</button>
+    </form>
+    <p id="adminMsg" role="status" class="hidden text-sm font-bold rounded-lg px-3 py-2 bg-danger-soft text-danger"></p>
+
+    <div id="adminPanel" class="hidden space-y-8">
+      <div>
+        <h2 class="text-lg font-extrabold text-brand mb-3">بانتظار الموافقة (<span id="pendingCount">0</span>)</h2>
+        <div id="pendingList" class="space-y-3"></div>
+      </div>
+      <div>
+        <h2 class="text-lg font-extrabold text-ok mb-3">المنشورة (<span id="approvedCount">0</span>)</h2>
+        <div id="approvedList" class="space-y-3"></div>
+      </div>
+      <button id="adminLogout" type="button" class="text-xs text-muted underline">تسجيل الخروج</button>
+    </div>
+  </section>
+  <script is:inline defer src={assetUrl('/js/admin.js')}></script>
+</BaseLayout>

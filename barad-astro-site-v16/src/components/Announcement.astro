@@ -1,0 +1,9 @@
+---
+// شريط إعلان اختياري أعلى الموقع (عرض موسمي مثلاً). يُفعَّل من لوحة التحكم.
+import announcement from '../data/cms/announcement.json';
+const text = String(announcement.text ?? '').trim();
+const show = Boolean(announcement.enabled) && text.length > 0;
+---
+{show && (
+  <div class="bg-brand text-white text-center text-sm font-bold px-4 py-2" role="status">{text}</div>
+)}

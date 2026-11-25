@@ -1,0 +1,21 @@
+---
+// أسئلة شائعة بلا جافاسكربت (عنصر details الأصلي في المتصفح).
+import type { FaqItem } from '../data/content';
+import Icon from './Icon.astro';
+
+export interface Props {
+  items: FaqItem[];
+}
+const { items } = Astro.props;
+---
+<div class="space-y-2.5">
+  {items.map((f) => (
+    <details class="group rounded-xl bg-card border border-line">
+      <summary class="flex items-center justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden px-4 py-3.5 text-sm sm:text-base font-bold text-ink">
+        <span>{f.q}</span>
+        <Icon name="chevron" class="w-5 h-5 shrink-0 text-brand transition-transform group-open:rotate-180" />
+      </summary>
+      <p class="px-4 pb-4 text-sm sm:text-base text-copy leading-relaxed">{f.a}</p>
+    </details>
+  ))}
+</div>

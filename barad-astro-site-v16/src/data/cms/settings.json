@@ -1,0 +1,8 @@
+{
+  "warrantyDays": 30,
+  "paymentMethods": [
+    "نقداً",
+    "تحويل بنكي",
+    "مدى"
+  ]
+}

@@ -1,0 +1,57 @@
+---
+import { services, siteConfig } from '../data/siteData';
+import { navLinks } from '../data/content';
+import Icon from './Icon.astro';
+
+const quickLinks = [
+  ...navLinks.filter((l) => l.href !== '/#services'),
+  { label: 'بطاقة الولاء والباقة السنوية', href: '/loyalty/' },
+  { label: 'الضمان والصيانة', href: '/warranty/' },
+  { label: 'سياسة الخصوصية', href: '/privacy/' },
+  { label: 'الشروط والأحكام', href: '/terms/' },
+];
+---
+<footer class="bg-night text-white/80 pt-10 pb-24 sm:pb-8 px-4">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-sm">
+    <div>
+      <p class="font-extrabold text-white text-base">{siteConfig.name}</p>
+      <p class="text-xs text-white/60 mt-1">{siteConfig.legalName}</p>
+      <p class="text-xs text-white/60">سجل تجاري: {siteConfig.crNumber}</p>
+      <div class="flex flex-wrap gap-2 mt-3">
+        <button type="button" data-open-cr-modal class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold text-white">عرض شهادة السجل</button>
+        <button id="copyCrBtn" type="button" data-cr={siteConfig.crNumber} class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold text-white">نسخ رقم السجل</button>
+      </div>
+      <p id="copyToast" role="status" aria-live="polite" class="hidden text-xs text-emerald-300 font-bold mt-2">✓ تم نسخ رقم السجل التجاري</p>
+    </div>
+
+    <div>
+      <p class="font-extrabold text-white mb-3">خدماتنا</p>
+      <ul class="space-y-1.5 text-xs sm:text-sm">
+        {services.map((s) => (
+          <li><a href={`/services/${s.slug}/`} class="hover:text-white hover:underline">{s.title}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <p class="font-extrabold text-white mb-3">روابط سريعة</p>
+      <ul class="space-y-1.5 text-xs sm:text-sm">
+        {quickLinks.map((l) => (
+          <li><a href={l.href} class="hover:text-white hover:underline">{l.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <p class="font-extrabold text-white mb-3">تواصل معنا</p>
+      <ul class="space-y-2 text-xs sm:text-sm">
+        <li class="flex items-start gap-2"><Icon name="phone" class="w-4 h-4 mt-0.5 shrink-0" /><a href={`tel:${siteConfig.phoneIntl}`} data-track-loc="footer" class="font-bold text-white hover:underline" dir="ltr">{siteConfig.phoneDisplay}</a></li>
+        <li class="flex items-start gap-2"><Icon name="pin" class="w-4 h-4 mt-0.5 shrink-0" /><span>{siteConfig.address}</span></li>
+        <li class="flex items-start gap-2"><Icon name="check" class="w-4 h-4 mt-0.5 shrink-0" /><span>{siteConfig.locationNote}</span></li>
+        <li class="flex items-start gap-2"><Icon name="shield" class="w-4 h-4 mt-0.5 shrink-0" /><span>الدفع: {siteConfig.paymentMethods.join(' • ')}</span></li>
+        <li class="flex items-start gap-2"><Icon name="clock" class="w-4 h-4 mt-0.5 shrink-0" /><span>{siteConfig.hoursText}</span></li>
+      </ul>
+    </div>
+  </div>
+  <p class="max-w-7xl mx-auto mt-8 pt-4 border-t border-white/10 text-xs text-white/60">© {new Date().getFullYear()} {siteConfig.legalName} (علامة براد). نخدم جميع أحياء مدينة جدة.</p>
+</footer>

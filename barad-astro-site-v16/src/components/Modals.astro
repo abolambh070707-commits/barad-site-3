@@ -1,0 +1,33 @@
+---
+import { siteConfig } from '../data/siteData';
+const blank = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+---
+<div id="crModal" role="dialog" aria-modal="true" aria-labelledby="crModalTitle" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-night/80 p-4">
+  <div class="relative w-full max-w-3xl rounded-2xl bg-card border border-line p-5 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div class="flex items-center justify-between gap-3 border-b border-line pb-3 mb-4">
+      <div>
+        <h2 id="crModalTitle" class="text-lg sm:text-xl font-extrabold text-ink">شهادة السجل التجاري - {siteConfig.legalName}</h2>
+        <p class="text-xs text-muted mt-0.5">رقم السجل التجاري الموحد: {siteConfig.crNumber} • وزارة التجارة - المملكة العربية السعودية</p>
+      </div>
+      <button type="button" data-close-modal aria-label="إغلاق نافذة السجل التجاري" class="shrink-0 px-3 py-1.5 rounded-lg bg-soft hover:bg-line text-ink text-sm font-bold">إغلاق ✕</button>
+    </div>
+    <div class="bg-soft rounded-xl p-2 flex items-center justify-center min-h-[260px]">
+      <picture>
+        <source id="crModalAvif" type="image/avif" data-srcset="/images/cr-certificate.avif" />
+        <source id="crModalWebp" type="image/webp" data-srcset="/images/cr-certificate.webp" />
+        <img id="crModalImg" data-src="/images/cr-certificate.webp" alt={`شهادة السجل التجاري الرسمية لمؤسسة براد لصيانة التكييف والتبريد رقم ${siteConfig.crNumber}`} width="1080" height="763" class="w-full h-auto rounded-lg object-contain" />
+      </picture>
+    </div>
+  </div>
+</div>
+
+<div id="lightboxModal" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-night/90 p-4">
+  <div class="relative w-full max-w-3xl rounded-2xl bg-card border border-line p-4 sm:p-6 shadow-2xl">
+    <div class="flex items-center justify-between gap-3 pb-3 mb-3 border-b border-line">
+      <h2 id="lightboxTitle" class="text-base sm:text-lg font-bold text-ink">معرض أعمال مؤسسة براد</h2>
+      <button type="button" data-close-modal aria-label="إغلاق معاينة الصورة" class="shrink-0 px-3 py-1.5 rounded-lg bg-soft hover:bg-line text-ink text-sm font-bold">إغلاق ✕</button>
+    </div>
+    <img id="lightboxImg" src={blank} alt="" width="800" height="597" class="w-full max-h-[70vh] object-contain rounded-xl bg-soft" />
+    <p id="lightboxCaption" class="text-sm text-copy mt-3 text-center font-medium"></p>
+  </div>
+</div>

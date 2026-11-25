@@ -1,0 +1,9 @@
+---
+// يطبع بيانات جوجل المنظمة. الحمولة تُبنى في src/lib/schema.ts
+export interface Props {
+  graph: object[];
+}
+const { graph } = Astro.props;
+const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
+---
+<script type="application/ld+json" is:inline set:html={json} />

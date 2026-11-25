@@ -1,0 +1,45 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import CtaButtons from '../../components/CtaButtons.astro';
+import { siteConfig } from '../../data/siteData';
+import { loyaltyCard, annualPackage, packageWarrantyDays } from '../../data/content';
+---
+<LegalPage
+  title="بطاقة الولاء والباقة السنوية"
+  description="بطاقة ولاء براد: 5 أختام والزيارة السادسة غسيل مجاني، والباقة السنوية للأفراد بغسيلتين في السنة وفحص وأولوية حجز وضمان ممتد."
+  path="/loyalty/"
+  updated="21 نوفمبر 2026"
+>
+  <section>
+    <h2>{loyaltyCard.title}</h2>
+    <p class="font-bold text-ink">{loyaltyCard.headline}</p>
+    <ul class="mt-2">
+      {loyaltyCard.terms.map((t) => <li>{t}</li>)}
+    </ul>
+  </section>
+
+  <section>
+    <h2>{annualPackage.title}</h2>
+    <p class="font-bold text-ink">{annualPackage.headline}</p>
+    <p class="mt-2">ما تشمله الباقة:</p>
+    <ul class="mt-1">
+      {annualPackage.highlights.map((t) => <li>{t}</li>)}
+    </ul>
+    <p class="mt-3">شروط الباقة:</p>
+    <ul class="mt-1">
+      {annualPackage.terms.map((t) => <li>{t}</li>)}
+    </ul>
+    <p class="mt-2">ضمان الغسيل لأعضاء الباقة {packageWarrantyDays} يوماً، وهو ضمان على العمل فقط وفق <a href="/warranty/">سياسة الضمان والصيانة</a>.</p>
+  </section>
+
+  <section>
+    <h2>التذكيرات وبياناتك</h2>
+    <p>نسجل اسمك ورقم جوالك وحيّك وتواريخ خدماتك وعدد مكيفاتك لنحسب أختامك ونتابع باقتك ونذكّرك بموعد الغسيل. لا نرسل تذكيرات إلا بموافقتك، ويمكنك إيقافها في أي وقت بإخبارنا. التفاصيل في <a href="/privacy/">سياسة الخصوصية</a>.</p>
+  </section>
+
+  <section>
+    <h2>للاشتراك أو الاستفسار</h2>
+    <p>تواصل معنا على {siteConfig.phoneDisplay} أو عبر واتساب، واذكر عدد مكيفاتك لنرسل لك التفاصيل.</p>
+    <CtaButtons loc="loyalty" class="max-w-sm mt-3" />
+  </section>
+</LegalPage>

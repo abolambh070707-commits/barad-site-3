@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "service": "ac-cleaning-preventive-maintenance",
+      "priceFrom": ""
+    },
+    {
+      "service": "ac-installation-copper-piping",
+      "priceFrom": ""
+    },
+    {
+      "service": "ac-repair-corrective-maintenance",
+      "priceFrom": ""
+    },
+    {
+      "service": "freon-charging-leak-detection",
+      "priceFrom": ""
+    },
+    {
+      "service": "central-concealed-cassette-hvac",
+      "priceFrom": ""
+    },
+    {
+      "service": "annual-ac-maintenance-contracts",
+      "priceFrom": ""
+    }
+  ]
+}

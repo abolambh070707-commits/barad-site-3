@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== هوية الموقع: عدّل الألوان من هنا فقط (قيم RGB) ===== */
+:root {
+  --c-page: 247 250 252;
+  --c-card: 255 255 255;
+  --c-soft: 232 243 251;
+  --c-line: 211 224 237;
+  --c-ink: 15 42 71;
+  --c-copy: 51 65 85;
+  --c-muted: 82 98 120;
+  --c-brand: 3 105 161;
+  --c-brand-hover: 7 89 133;
+  --c-brand-soft: 224 242 254;
+  --c-wa: 4 120 87;
+  --c-wa-hover: 6 95 70;
+  --c-night: 11 30 52;
+  --c-star: 245 158 11;
+  --c-danger: 185 28 28;
+  --c-danger-soft: 254 226 226;
+  --c-ok: 4 120 87;
+  --c-ok-soft: 209 250 229;
+
+  /* الخط: خطوط النظام (أخف ما يمكن). لإضافة خط عربي مستضاف راجع README */
+  --font-sans: system-ui, -apple-system, 'Segoe UI', 'Noto Sans Arabic', Tahoma, Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  font-family: var(--font-sans);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: rgb(var(--c-page));
+  color: rgb(var(--c-copy));
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { color: rgb(var(--c-ink)); line-height: 1.35; }
+
+:focus-visible { outline: 2px solid rgb(var(--c-brand)); outline-offset: 2px; }
+::selection { background-color: rgb(var(--c-brand)); color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, ::before, ::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

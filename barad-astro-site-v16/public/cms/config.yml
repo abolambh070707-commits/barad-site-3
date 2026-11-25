@@ -1,0 +1,97 @@
+# إعدادات لوحة التحكم (Decap CMS) لموقع براد.
+backend:
+  name: github
+  repo: abolambh070707-commits/barad-site1
+  branch: main
+
+locale: ar
+publish_mode: simple        # كل حفظ يُنشر مباشرة (ينتظر الموقع دقيقة أو دقيقتين ليُعاد بناؤه)
+media_folder: public/images/uploads
+public_folder: /images/uploads
+site_url: https://barad-ac.netlify.app   # غيّره إذا تغيّر رابط الموقع
+display_url: https://barad-ac.netlify.app
+logo_url: https://barad-ac.netlify.app/images/logo.webp
+
+collections:
+  - name: site
+    label: إعدادات الموقع
+    delete: false
+    files:
+      - name: settings
+        label: الضمان وطرق الدفع
+        file: src/data/cms/settings.json
+        format: json
+        fields:
+          - label: مدة الضمان بالأيام
+            name: warrantyDays
+            widget: number
+            value_type: int
+            min: 1
+            max: 365
+            hint: يتغير في صفحة الضمان والشروط والأسئلة الشائعة تلقائياً.
+          - label: طرق الدفع
+            name: paymentMethods
+            widget: list
+            hint: أمثلة نقداً، تحويل بنكي، مدى، Apple Pay.
+            field: { label: طريقة الدفع, name: method, widget: string }
+
+      - name: prices
+        label: أسعار «يبدأ من» للخدمات
+        file: src/data/cms/prices.json
+        format: json
+        fields:
+          - label: الخدمات
+            name: items
+            widget: list
+            allow_add: false
+            hint: اترك السعر فارغاً لإخفائه. مثال للكتابة، من 35 ريال.
+            fields:
+              - label: الخدمة
+                name: service
+                widget: select
+                options:
+                  - { label: الصيانة الوقائية وغسيل المكيفات, value: ac-cleaning-preventive-maintenance }
+                  - { label: تأسيس المواسير والتركيب والنقل, value: ac-installation-copper-piping }
+                  - { label: الصيانة العلاجية وإصلاح الأعطال, value: ac-repair-corrective-maintenance }
+                  - { label: كشف تسريب الفريون والشحن والفحص, value: freon-charging-leak-detection }
+                  - { label: المكيفات المركزية والكونسيلد والكاسيت والدولابي, value: central-concealed-cassette-hvac }
+                  - { label: عقود الصيانة السنوية للمنشآت والمساكن, value: annual-ac-maintenance-contracts }
+              - { label: السعر (نص يظهر للعميل), name: priceFrom, widget: string, required: false }
+
+      - name: announcement
+        label: شريط الإعلان العلوي
+        file: src/data/cms/announcement.json
+        format: json
+        fields:
+          - { label: إظهار الشريط, name: enabled, widget: boolean, default: false }
+          - { label: نص الإعلان, name: text, widget: string, required: false, hint: مثال، عرض الصيف خصم على غسيل المكيفات حتى نهاية الشهر. }
+
+  - name: content
+    label: محتوى الصفحة الرئيسية
+    delete: false
+    files:
+      - name: faqs
+        label: الأسئلة الشائعة
+        file: src/data/cms/faqs.json
+        format: json
+        fields:
+          - label: الأسئلة
+            name: items
+            widget: list
+            summary: '{{fields.q}}'
+            hint: يمكنك استخدام الرموز التالية داخل النص وتُستبدل تلقائياً، {{warrantyDays}} {{hoursText}} {{phone}} {{payments}}
+            fields:
+              - { label: السؤال, name: q, widget: string }
+              - { label: الجواب, name: a, widget: text }
+
+      - name: brands
+        label: الماركات
+        file: src/data/cms/brands.json
+        format: json
+        fields:
+          - { label: جملة الماركات العامة, name: brandsNote, widget: string }
+          - label: أسماء ماركات تريد إبرازها (اختياري)
+            name: brands
+            widget: list
+            required: false
+            field: { label: الماركة, name: brand, widget: string }

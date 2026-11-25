@@ -1,0 +1,77 @@
+---
+import { services } from '../data/siteData';
+import { assetUrl } from '../lib/assets';
+const field = 'w-full rounded-xl bg-card border border-line px-4 py-2.5 text-ink placeholder-muted';
+---
+<section id="reviews" class="py-12 px-4 bg-soft border-y border-line">
+  <div class="max-w-3xl mx-auto space-y-5">
+    <div class="flex items-end justify-between gap-3">
+      <div>
+        <h2 class="text-xl sm:text-3xl font-extrabold">تقييمات العملاء</h2>
+        <p id="reviewsSummary" class="text-sm text-muted mt-1 min-h-[1.25rem]"></p>
+      </div>
+      <button type="button" data-open-review-modal class="shrink-0 px-4 py-2.5 rounded-xl bg-brand hover:bg-brand-hover text-white text-sm font-extrabold transition-colors">أضف تقييمك</button>
+    </div>
+
+    <div id="reviewsList" class="space-y-3"></div>
+    <button id="reviewsMore" type="button" class="hidden w-full py-2.5 rounded-xl bg-card hover:bg-page border border-line text-sm font-bold text-ink">عرض المزيد</button>
+
+  </div>
+</section>
+
+<!-- نافذة إضافة تقييم: نموذج واحد بدون تسجيل دخول -->
+<div id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-night/80 p-4">
+  <div class="relative w-full max-w-md rounded-2xl bg-card border border-line p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div class="flex items-center justify-between border-b border-line pb-3 mb-4">
+      <h2 id="reviewModalTitle" class="text-lg font-extrabold text-ink">أضف تقييمك</h2>
+      <button type="button" data-close-modal aria-label="إغلاق" class="px-3 py-1.5 rounded-lg bg-soft hover:bg-line text-ink text-sm font-bold">إغلاق ✕</button>
+    </div>
+
+    <p id="reviewMsg" role="status" aria-live="polite" class="hidden text-sm font-bold rounded-lg px-3 py-2 mb-3"></p>
+
+    <form data-step="review" id="rvForm" class="space-y-3">
+      <div>
+        <span class="block text-sm font-bold text-ink mb-1">تقييمك</span>
+        <div id="rvStars" class="flex gap-1 text-3xl" role="radiogroup" aria-label="التقييم من 1 إلى 5">
+          {[1, 2, 3, 4, 5].map((n) => (
+            <button type="button" data-star={n} role="radio" aria-checked="false" aria-label={`${n} من 5`} class="text-line hover:text-star transition-colors">★</button>
+          ))}
+        </div>
+      </div>
+      <div>
+        <label for="rvService" class="block text-sm font-bold text-ink mb-1">الخدمة</label>
+        <select id="rvService" class={field}>
+          {services.map((s) => <option value={s.title}>{s.title}</option>)}
+        </select>
+      </div>
+      <div>
+        <label for="rvName" class="block text-sm font-bold text-ink mb-1">الاسم (يظهر مع التقييم)</label>
+        <input id="rvName" type="text" maxlength="40" required autocomplete="given-name" placeholder="مثال: أبو عبدالرحمن" class={field} />
+      </div>
+      <div>
+        <label for="rvPhone" class="block text-sm font-bold text-ink mb-1">رقم الجوال (اختياري)</label>
+        <input id="rvPhone" type="tel" inputmode="numeric" autocomplete="tel" dir="ltr" maxlength="20" placeholder="05XXXXXXXX" class={`${field} text-left`} />
+        <p class="text-xs text-muted mt-1">للتأكد من أنك عميل فقط. لا يظهر للزوار ويُحذف بعد مراجعة التقييم.</p>
+      </div>
+      <div>
+        <label for="rvText" class="block text-sm font-bold text-ink mb-1">تجربتك</label>
+        <textarea id="rvText" rows="4" maxlength="600" required class={field}></textarea>
+      </div>
+      <!-- حقل فخّ للروبوتات: يبقى فارغاً عند الإنسان -->
+      <div class="absolute -left-[9999px]" aria-hidden="true">
+        <label for="rvWebsite">الموقع</label>
+        <input id="rvWebsite" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <button id="rvSubmit" type="submit" class="w-full py-3 rounded-xl bg-wa hover:bg-wa-hover text-white font-extrabold">إرسال التقييم</button>
+      <p class="text-xs text-muted">يظهر التقييم في الموقع بعد مراجعته والموافقة عليه. بإرسالك التقييم فإنك توافق على <a href="/privacy/" target="_blank" class="text-brand underline">سياسة الخصوصية</a> و<a href="/terms/" target="_blank" class="text-brand underline">الشروط والأحكام</a>.</p>
+    </form>
+
+    <div data-step="done" class="hidden text-center space-y-3 py-4">
+      <p class="text-4xl" aria-hidden="true">✅</p>
+      <p class="text-base font-bold text-ink">شكراً لك! وصلنا تقييمك.</p>
+      <p class="text-sm text-muted">سيظهر في الموقع بعد المراجعة.</p>
+      <button type="button" data-close-modal class="px-5 py-2.5 rounded-xl bg-soft hover:bg-line text-ink font-bold text-sm">إغلاق</button>
+    </div>
+  </div>
+</div>
+<script is:inline defer src={assetUrl('/js/reviews.js')}></script>

@@ -1,0 +1,28 @@
+# ملاحظة: سياسة الأمان CSP لصفحات الموقع موجودة في src/lib/csp.ts (وسم meta)، وليست هنا،
+# حتى لا تُطبَّق على لوحة التحكم /cms/ التي تحمل سكربت Decap من jsDelivr وتتصل بـ GitHub.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+
+# ملفات Astro المبصّمة: كاش سنة كاملة آمن
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# ملفات JS تُضاف لها بصمة (?v=...) تلقائياً عند البناء، فالكاش الطويل آمن
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# الصور بأسماء ثابتة: أسبوع ثم تُجدَّد، حتى يصل أي استبدال للصورة
+/images/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+
+/cms/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store

@@ -1,0 +1,94 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+import Announcement from '../components/Announcement.astro';
+import { csp } from '../lib/csp';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import type { BreadcrumbLink } from '../components/Breadcrumbs.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Footer from '../components/Footer.astro';
+import StickyMobileBar from '../components/StickyMobileBar.astro';
+import Modals from '../components/Modals.astro';
+import { siteConfig } from '../data/siteData';
+import { assetUrl } from '../lib/assets';
+import { abs, businessSchema, breadcrumbSchema } from '../lib/schema';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  /** مسار التنقل بعد «الرئيسية» (الأخير بلا href). تُبنى منه بيانات جوجل تلقائياً. */
+  crumbs?: BreadcrumbLink[];
+  noindex?: boolean;
+  /** صورة المشاركة (مسار نسبي). الافتراضي في siteConfig.ogImage */
+  image?: string;
+  /** عقد JSON-LD إضافية (Service, FAQPage...) */
+  schema?: object[];
+}
+
+const {
+  title = siteConfig.defaultTitle,
+  description = siteConfig.defaultDescription,
+  canonicalPath = '/',
+  crumbs = [],
+  noindex = false,
+  image = siteConfig.ogImage,
+  schema = [],
+} = Astro.props;
+
+const canonicalUrl = `${siteConfig.url}${canonicalPath}`;
+const ogImage = abs(image);
+const isDefaultOg = image === siteConfig.ogImage;
+const trail: BreadcrumbLink[] = [{ name: 'الرئيسية', href: '/' }, ...crumbs];
+const schemaCrumbs = trail.map((c, i) => ({
+  name: c.name,
+  url: i === trail.length - 1 && i > 0 ? canonicalUrl : abs(c.href || '/'),
+}));
+const graph = [businessSchema(), breadcrumbSchema(schemaCrumbs), ...schema];
+const analyticsDomain = new URL(siteConfig.url).hostname;
+---
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content={csp} />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" type="image/webp" href="/images/favicon.webp" />
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link rel="apple-touch-icon" href="/images/favicon.png" />
+  <meta property="og:locale" content="ar_SA" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={siteConfig.name} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:image" content={ogImage} />
+  {isDefaultOg && <meta property="og:image:width" content="1200" />}
+  {isDefaultOg && <meta property="og:image:height" content="630" />}
+  <meta property="og:image:alt" content={siteConfig.name} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+  <JsonLd graph={graph} />
+  <script is:inline defer data-domain={analyticsDomain} src="https://plausible.io/js/script.js"></script>
+  <script is:inline defer src={assetUrl('/js/main.js')}></script>
+</head>
+<body class="min-h-screen flex flex-col bg-page text-copy">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:right-2 focus:z-50 focus:bg-brand focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">تخطي إلى المحتوى الرئيسي</a>
+  <Announcement />
+  <Navbar />
+  {trail.length > 1 && <Breadcrumbs items={trail} />}
+  <main id="main-content" class="flex-1">
+    <slot />
+  </main>
+  <Footer />
+  <StickyMobileBar />
+  <Modals />
+</body>
+</html>

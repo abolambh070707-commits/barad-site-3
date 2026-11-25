@@ -1,0 +1,19 @@
+{
+  "name": "barad-ac-astro",
+  "type": "module",
+  "version": "2.0.0",
+  "private": true,
+  "description": "موقع مؤسسة براد لصيانة التكييف والتبريد بجدة - مبني بواسطة Astro و Tailwind CSS",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "5.1.4",
+    "@netlify/blobs": "^8.1.0",
+    "astro": "4.16.18",
+    "tailwindcss": "3.4.17"
+  }
+}

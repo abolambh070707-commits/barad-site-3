@@ -1,0 +1,57 @@
+---
+import { services, siteConfig } from '../data/siteData';
+import { navLinks } from '../data/content';
+import Icon from './Icon.astro';
+
+// في قائمة الجوال تظهر الخدمات مباشرة، فنستبعد رابط «خدماتنا» العام منها
+const mobileLinks = navLinks.filter((l) => l.href !== '/#services');
+---
+<header class="sticky top-0 z-40 bg-card border-b border-line shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 gap-3">
+      <a href="/" class="flex items-center gap-3 min-w-0" aria-label="مؤسسة براد لصيانة التكييف والتبريد - الصفحة الرئيسية">
+        <picture>
+          <source type="image/avif" srcset="/images/logo-96w.avif 96w, /images/logo.avif 220w" sizes="44px" />
+          <source type="image/webp" srcset="/images/logo-96w.webp 96w, /images/logo.webp 220w" sizes="44px" />
+          <img src="/images/logo-96w.webp" alt="شعار مؤسسة براد لصيانة التكييف والتبريد بجدة" width="44" height="44" class="w-11 h-11 rounded-xl object-cover" />
+        </picture>
+        <div class="min-w-0">
+          <span class="block text-base sm:text-lg font-extrabold text-ink truncate">{siteConfig.shortName}</span>
+          <span class="hidden sm:block text-xs text-muted">صيانة وغسيل وتأسيس مكيفات بجدة</span>
+        </div>
+      </a>
+
+      <nav aria-label="القائمة الرئيسية" class="hidden lg:flex items-center gap-1 text-sm font-bold text-copy">
+        {navLinks.map((l) => (
+          <a href={l.href} class="px-3 py-2 rounded-lg hover:bg-soft hover:text-brand transition-colors">{l.label}</a>
+        ))}
+      </nav>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <a href={`tel:${siteConfig.phoneIntl}`} data-track-loc="header" aria-label={`اتصل بنا على ${siteConfig.phoneDisplay}`} class="inline-flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-brand hover:bg-brand-hover text-white text-sm font-extrabold transition-colors">
+          <Icon name="phone" class="w-5 h-5" />
+          <span class="hidden sm:inline" dir="ltr">{siteConfig.phoneDisplay}</span>
+        </a>
+        <button id="mobileMenuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="فتح القائمة" class="lg:hidden inline-flex items-center justify-center p-2.5 rounded-xl border border-line text-ink hover:bg-soft">
+          <Icon name="menu" class="w-6 h-6" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- قائمة الجوال فقط. لإضافة رابط جديد: src/data/content.ts (navLinks) -->
+  <div id="mobileMenu" class="hidden lg:hidden absolute top-full inset-x-0 bg-card border-b border-line shadow-xl max-h-[80vh] overflow-y-auto">
+    <nav aria-label="قائمة الجوال" class="p-3 space-y-1 text-sm font-semibold text-copy">
+      <a href="/" class="block px-3 py-2.5 rounded-lg hover:bg-soft">الرئيسية</a>
+      <p class="px-3 pt-3 pb-1 text-xs font-bold text-brand">خدماتنا</p>
+      {services.map((s) => (
+        <a href={`/services/${s.slug}/`} class="block px-3 py-2 rounded-lg hover:bg-soft hover:text-ink">{s.title}</a>
+      ))}
+      <div class="border-t border-line my-2"></div>
+      {mobileLinks.map((l) => (
+        <a href={l.href} class="block px-3 py-2.5 rounded-lg hover:bg-soft">{l.label}</a>
+      ))}
+      <button type="button" data-open-cr-modal class="block w-full text-right px-3 py-2.5 rounded-lg text-ok hover:bg-soft">شهادة السجل التجاري</button>
+    </nav>
+  </div>
+</header>

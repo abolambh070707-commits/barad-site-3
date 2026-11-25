@@ -1,0 +1,62 @@
+---
+import { siteConfig, services } from '../data/siteData';
+import { acTypes } from '../data/content';
+
+export interface Props {
+  defaultService?: string;
+}
+
+const { defaultService = '' } = Astro.props;
+const waPhone = siteConfig.phoneIntl.replace('+', '');
+// خيارات الخدمة تُبنى من قائمة الخدمات نفسها، فلا تختلف عنها أبداً
+const serviceOptions = services.map((s) => s.title);
+const field = 'w-full rounded-xl bg-card border border-line px-4 py-2.5 text-ink placeholder-muted';
+---
+<section id="booking" class="py-10 px-4 bg-soft border-t border-line">
+  <div class="max-w-3xl mx-auto bg-card border border-line rounded-2xl p-5 sm:p-8 shadow-lg">
+    <div class="mb-5">
+      <h2 class="text-xl sm:text-2xl font-extrabold">اطلب الخدمة الآن</h2>
+      <p class="text-muted text-sm mt-1">املأ البيانات وسيُفتح لك واتساب برسالة جاهزة إلى مؤسسة براد.</p>
+    </div>
+    <form id="whatsappBookingForm" data-wa-phone={waPhone} class="space-y-3.5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <div>
+          <label for="clientName" class="block text-sm font-bold text-ink mb-1">الاسم <span class="text-brand">*</span></label>
+          <input id="clientName" name="client_name" type="text" required autocomplete="name" class={field} />
+        </div>
+        <div>
+          <label for="clientDistrict" class="block text-sm font-bold text-ink mb-1">الحي (اختياري)</label>
+          <input id="clientDistrict" name="client_district" type="text" placeholder="مثال: الواحة" class={field} />
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <div>
+          <label for="acTypeSelect" class="block text-sm font-bold text-ink mb-1">نوع المكيف</label>
+          <select id="acTypeSelect" name="ac_type" class={field}>
+            {acTypes.map((t) => <option value={t}>{t}</option>)}
+          </select>
+        </div>
+        <div>
+          <label for="serviceTypeSelect" class="block text-sm font-bold text-ink mb-1">الخدمة المطلوبة</label>
+          <select id="serviceTypeSelect" name="service_type" class={field}>
+            {serviceOptions.map((t) => <option value={t} selected={t === defaultService}>{t}</option>)}
+          </select>
+        </div>
+      </div>
+      <div>
+        <label for="clientCard" class="block text-sm font-bold text-ink mb-1">صاحب بطاقة الولاء (اختياري)</label>
+        <input id="clientCard" name="client_card" type="text" placeholder="إن كنت تستخدم بطاقة شخص آخر اكتب اسمه" class={field} />
+      </div>
+      <div>
+        <label for="clientNotes" class="block text-sm font-bold text-ink mb-1">ملاحظات (اختياري)</label>
+        <textarea id="clientNotes" name="client_notes" rows="2" placeholder="مثال: لدي 4 مكيفات سبليت تحتاج غسيل..." class={field}></textarea>
+      </div>
+      <label class="flex items-start gap-2 text-sm text-copy">
+        <input id="clientReminders" name="client_reminders" type="checkbox" class="mt-1 w-4 h-4 shrink-0" />
+        <span>أوافق على استلام تذكيرات الصيانة عبر واتساب (يمكنك إيقافها في أي وقت).</span>
+      </label>
+      <button type="submit" class="w-full py-3.5 px-6 rounded-xl bg-wa hover:bg-wa-hover text-white font-extrabold text-base transition-colors shadow">إرسال الطلب عبر واتساب</button>
+      <noscript><p class="text-sm text-muted">لتفعيل النموذج شغّل الجافاسكربت، أو راسلنا مباشرة عبر <a class="text-brand underline" href={siteConfig.whatsappUrl}>واتساب</a>.</p></noscript>
+    </form>
+  </div>
+</section>
